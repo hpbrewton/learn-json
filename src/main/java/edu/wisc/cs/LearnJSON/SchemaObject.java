@@ -1,5 +1,7 @@
 package edu.wisc.cs.LearnJSON;
 
+import automata.sfta.*;
+
 import com.google.gson.JsonStreamParser;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonElement;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collection;
+import java.util.Collections;
 
 // for testing
 import java.io.StringReader;
@@ -90,6 +93,27 @@ public class SchemaObject
 			return new SchemaObject(element.getAsJsonObject());
 		}	
 	}
+
+	public SFTA<JsonPred, JsonLetter> toSFTA() {
+		JsonAlgebra boolAlgebra = new JsonAlgebra();
+		SFTA<JsonPred, JsonLetter> sfta = new SFTA<JsonPred, JsonLetter>(boolAlgebra);
+		fillSFTA(sfta, 0);
+		return sfta;
+	}
+
+	private int fillSFTA(SFTA<JsonPred, JsonLetter> sfta, int num){
+		if (type.equals("boolean")) {
+			int bState = num++;
+			sfta.addState(bState);
+			SFTAMove<JsonPred, JsonLetter> move = 
+				new SFTAMove<>(bState, 
+					new JsonPred(JsonLetter.Control.BOOL),
+					Collections.emptyList());
+		       	sfta.addTransition(Collections.emptyList(), move);
+		}
+		return num;
+	}
+	
 
 	public String toString() {
 		return String.format("{\"description\":%s,\"type\":%s,\"properties\":%s,\"required\":%s}", 

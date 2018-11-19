@@ -15,6 +15,7 @@ public class AppTest
 {
 
 	private final String schema1 = "src/test/java/edu/wisc/cs/LearnJSON/s1.json";
+	private final String schema2 = "src/test/java/edu/wisc/cs/LearnJSON/s2.json";
 	private final String json1 = "src/test/java/edu/wisc/cs/LearnJSON/j1.json";
 
 
@@ -35,6 +36,13 @@ public class AppTest
 			Tree<JsonLetter> tree = JsonLetter.treeFromJson(element);
 			tree.debugPrint(0);	
 		}
+	}
+
+	@Test
+	public void sfta() 
+	{
+		SchemaObject obj = SchemaObject.read(new FileReader(schema2));
+		obj.toSFTA();
 	}
 
 }

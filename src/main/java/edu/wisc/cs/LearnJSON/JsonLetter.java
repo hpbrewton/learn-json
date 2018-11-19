@@ -71,6 +71,33 @@ public class JsonLetter {
 		}
 	}
 
+	@Override
+	public boolean equals(Object oth) {
+		if (oth instanceof JsonLetter) {
+			JsonLetter othl = (JsonLetter) oth;
+			if (this.cont.equals(othl.cont)) {
+				switch(othl.cont) {
+				case KEY: return othl.cont.equals(this.key);
+				case NUM: return othl.num.equals(this.num);
+				case CHR: return othl.chr.equals(this.chr);
+				case BOOL: return othl.bl == this.bl;
+				default: return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		switch(this.cont) {
+		case KEY: return this.key.hashCode();
+		case NUM: return this.num.hashCode();
+		case CHR: return this.chr.hashCode();
+		default: return this.cont.hashCode();
+		}
+	}
+
 	public String toString() {
 		switch (cont) {
 		case OBJ: return ":obj";
